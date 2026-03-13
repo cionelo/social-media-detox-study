@@ -1,26 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-parchment: #F5EFE6;
+  --color-cream: #EDE4D3;
+  --color-sage: #8B9E77;
+  --color-terracotta: #C4937A;
+  --color-ink: #3D3530;
+  --color-sky: #B8C9D4;
+
+  --font-mono: "JetBrains Mono", monospace;
+
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+
+  --shadow-soft: 0 2px 12px rgba(61, 53, 48, 0.08);
+  --shadow-card: 0 4px 20px rgba(61, 53, 48, 0.10);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    @apply bg-parchment text-ink font-mono;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .page-container {
+    @apply min-h-screen flex flex-col items-center justify-center px-4 py-12;
+  }
+  .page-title {
+    @apply text-2xl font-semibold text-ink mb-2 tracking-tight;
+  }
+  .page-subtitle {
+    @apply text-sm text-ink/60 mb-8;
+  }
 }
