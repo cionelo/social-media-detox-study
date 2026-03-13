@@ -2,13 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getConfig, setConfigValue } from '@/lib/sheets'
 
 export async function GET() {
-  try {
-    const config = await getConfig()
-    return NextResponse.json(config)
-  } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : String(e)
-    return NextResponse.json({ error: msg }, { status: 500 })
-  }
+  const config = await getConfig()
+  return NextResponse.json(config)
 }
 
 export async function POST(req: NextRequest) {
