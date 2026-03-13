@@ -1,38 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Social Media Detox Study
 
-## Getting Started
+built w/ love for my girlfriend &lt;3
 
-First, run the development server:
+Research site for Amilia Wise-Sweat's PSY533 study at Tiffin University — administers three neuropsychological tests and writes the results straight to Google Sheets so they're ready for SPSS.
+
+**Live:** https://social-media-detox-study.vercel.app
+
+---
+
+## How it works
+
+Participants go to the homepage, type in their participant ID (e.g. AB01012001), and the site looks them up in the prescreening Google Sheet to confirm their group (Heavy/Moderate user) and which session they're on (Pre or Post detox). Then they go through three tests back to back:
+
+1. Rosenberg Self-Esteem Scale — 10-item questionnaire, ~5 min
+2. Stroop Test — ink color identification task with practice round, ~10 min
+3. Trail Making Test — connect-the-dots tasks (Part A: numbers, Part B: alternating numbers and letters), ~10 min
+
+When they finish, everything saves automatically. One row per participant per session in the Results tab. Raw Stroop trial data goes to Stroop_Trials for outlier cleaning before analysis.
+
+The researcher controls Pre/Post mode from `/researcher`. Trial counts, participant cap, study title — all adjustable from `/settings` without touching code or redeploying.
+
+---
+
+## Setup
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Four environment variables required in `.env.local`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+GOOGLE_SERVICE_ACCOUNT_EMAIL=
+GOOGLE_PRIVATE_KEY=
+GOOGLE_SHEET_ID=
+RESEARCHER_PASSWORD=
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Full Google Cloud setup (service account, Sheets API, spreadsheet structure) is in `docs/plans/2026-03-12-phase0-scaffold.md`.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Tests
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm test
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Covers Rosenberg item scoring, Stroop RT stats (mean, SD, accuracy, interference score), TMT difference score, and the config parser.
 
-## Deploy on Vercel
+---
 
-built w/ love for my girlfriend <3
+## Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/
+  app/
+    api/          Google Sheets read/write, auth checks
+    test/         Rosenberg, Stroop, TMT pages
+    researcher/   Dashboard (session toggle, submission table)
+    settings/     Study config panel
+  components/
+    tests/        Test logic — timing, canvas drawing, scoring
+    researcher/   Dashboard and settings UI
+    ui/           Card, Button
+  lib/
+    sheets.ts     Google Sheets client
+    scoring.ts    Rosenberg, Stroop, TMT scoring functions
+    types.ts      Shared types
+docs/
+  plans/          Design doc, implementation plans, phase breakdown
+  RESEARCHER-GUIDE.md  Plain-English guide for the associate researcher
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Deployment
+
+Auto-deploys to Vercel on push to `main`. Environment variables live in the Vercel dashboard — do not commit `.env.local` or the service account JSON.
