@@ -47,7 +47,13 @@ export async function POST(req: NextRequest) {
     tmtBMinusA: tmtStats.bMinusA,
   }
 
-  await appendResults(results)
-  await appendStroopTrials(allStroopTrials)
-  return NextResponse.json({ ok: true })
+  try {
+    await appendResults(results)
+    await appendStroopTrials(allStroopTrials)
+    return NextResponse.json({ ok: true })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
+    console.error('[submit] error:', message)
+    return NextResponse.json({ ok: false, error: message }, { status: 500 })
+  }
 }
