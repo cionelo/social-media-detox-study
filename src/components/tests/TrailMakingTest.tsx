@@ -92,15 +92,14 @@ export function TrailMakingTest({ partACount = 25 }: { partACount?: number }) {
     // Circles
     circles.forEach((c, i) => {
       const done = i < nextIndex
-      const isNext = i === nextIndex
       const isShaking = i === shakeIdx
 
       ctx.beginPath()
       ctx.arc(c.x, c.y, CIRCLE_R, 0, Math.PI * 2)
       ctx.fillStyle = done ? '#8B9E77' : '#EDE4D3'
       ctx.fill()
-      ctx.strokeStyle = isShaking ? '#C4937A' : isNext ? '#C4937A' : done ? '#6d8060' : '#3D353030'
-      ctx.lineWidth = isNext || isShaking ? 2.5 : 1.5
+      ctx.strokeStyle = isShaking ? '#C4937A' : done ? '#6d8060' : '#3D353030'
+      ctx.lineWidth = isShaking ? 2.5 : 1.5
       ctx.stroke()
 
       ctx.fillStyle = done ? '#fff' : '#3D3530'
@@ -190,9 +189,6 @@ export function TrailMakingTest({ partACount = 25 }: { partACount?: number }) {
     <div className="page-container">
       <div className="flex items-center gap-6 mb-4 text-sm text-ink/60 font-mono">
         <span>Part {phase.toUpperCase()}</span>
-        <span>
-          Next: <strong className="text-ink">{circles[nextIndex]?.label}</strong>
-        </span>
         <span>
           Errors: <strong className="text-terracotta">{errors}</strong>
         </span>
