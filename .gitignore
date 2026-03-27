@@ -44,3 +44,4 @@ next-env.d.ts
 .env.local
 *.json.key
 social-media-detox-study-*.json
+SECRETS.md

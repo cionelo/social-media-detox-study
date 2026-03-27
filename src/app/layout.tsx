@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import Footer from '@/components/ui/Footer'
 
 export const metadata: Metadata = {
   title: 'Social Media Detox Study',
@@ -9,7 +10,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="bg-parchment font-mono antialiased">{children}</body>
+      <body className="bg-parchment font-mono antialiased">
+        {children}
+        <Footer />
+      </body>
     </html>
   )
 }
